@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Carousel</title>
+    <style>
+        .carousel {
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+        }
+        .carousel img {
+            width: 100%;
+            display: none;
+        }
+        .carousel img.active {
+            display: block;
+        }
+        .carousel .buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        .carousel button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel" id="carousel">
+        <img src="image1.jpg" class="active" alt="Image 1">
+        <img src="image2.jpg" alt="Image 2">
+        <img src="image3.jpg" alt="Image 3">
+        <div class="buttons">
+            <button id="prev">Previous</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const carousel = document.getElementById('carousel');
+        const images = carousel.getElementsByTagName('img');
+        const nextButton = document.getElementById('next');
+        const prevButton = document.getElementById('prev');
+        let currentIndex = 0;
+        let interval;
+
+        function showImage(index) {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (index + images.length) % images.length;
+            images[currentIndex].classList.add('active');
+        }
+
+        function nextImage() {
+            showImage(currentIndex + 1);
+        }
+
+        function prevImage() {
+            showImage(currentIndex - 1);
+        }
+
+        function startAutoSlide() {
+            interval = setInterval(nextImage, 3000);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(interval);
+        }
+
+        nextButton.addEventListener('click', nextImage);
+        prevButton.addEventListener('click', prevImage);
+        carousel.addEventListener('mouseover', stopAutoSlide);
+        carousel.addEventListener('mouseout', startAutoSlide);
+
+        startAutoSlide();
+    </script>
+</body>
+</html>

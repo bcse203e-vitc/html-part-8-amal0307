@@ -1,0 +1,61 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Digital Clock</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+                font-family: Arial, sans-serif;
+            }
+            #clock {
+                font-size: 3em;
+            }
+            #toggleFormat {
+                margin-top: 20px;
+                font-size: 1em;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div id="clock"></div>
+            <button id="toggleFormat">Toggle 12/24 Hour Format</button>
+        </div>
+
+        <script>
+            let is24HourFormat = true;
+
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+                let ampm = '';
+
+                if (!is24HourFormat) {
+                    ampm = hours >= 12 ? ' PM' : ' AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                }
+
+                const formattedTime = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}${ampm}`;
+                document.getElementById('clock').textContent = formattedTime;
+            }
+
+            document.getElementById('toggleFormat').addEventListener('click', () => {
+                is24HourFormat = !is24HourFormat;
+            });
+
+            setInterval(updateClock, 1000);
+            updateClock(); // initial call to display clock immediately
+        </script>
+    </body>
+    </html>

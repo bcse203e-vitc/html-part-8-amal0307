@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter</title>
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h1>Word Counter</h1>
+    <textarea id="textInput" rows="10" cols="50" placeholder="Type your text here..."></textarea>
+    <p>Word Count: <span id="wordCount">0</span></p>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const wordCount = document.getElementById('wordCount');
+
+        textInput.addEventListener('input', () => {
+            const text = textInput.value;
+            const words = text.match(/\b\w+\b/g) || [];
+            wordCount.textContent = words.length;
+
+            highlightRepeatedWords(textInput, words);
+        });
+
+        function highlightRepeatedWords(textarea, words) {
+            const wordMap = {};
+            words.forEach(word => {
+                word = word.toLowerCase();
+                wordMap[word] = (wordMap[word] || 0) + 1;
+            });
+
+            const highlightedText = textarea.value.replace(/\b\w+\b/g, (match) => {
+                return wordMap[match.toLowerCase()] > 1 ? `<span class="highlight">${match}</span>` : match;
+            });
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = highlightedText;
+            textarea.innerHTML = '';
+            textarea.appendChild(tempDiv);
+        }
+    </script>
+</body>
+</html>
